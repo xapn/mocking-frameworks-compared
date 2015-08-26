@@ -1,0 +1,30 @@
+###################
+# Compiled source #
+###################
+*.class
+bin
+build
+dist
+out
+target
+
+######################
+# OS generated files #
+######################
+.DS_Store
+thumbs.db
+
+#######################
+# IDE generated files #
+#######################
+.project
+.classpath
+.settings
+
+#######
+# SCM #
+#######
+.svn
+
+
+
