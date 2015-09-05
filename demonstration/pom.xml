@@ -41,5 +41,13 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
     </dependency>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~ Logging API ~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~ -->
+    <dependency>
+      <groupId>mocking</groupId>
+      <artifactId>logging-dependency</artifactId>
+    </dependency>
   </dependencies>
 </project>
