@@ -12,9 +12,6 @@ public class SystemUnderTest {
 
     private HowItBehaves howItBehaves;
 
-    public SystemUnderTest() {
-    }
-
     public SystemUnderTest(HowItBehaves howItBehaves) {
         this.howItBehaves = howItBehaves;
     }
