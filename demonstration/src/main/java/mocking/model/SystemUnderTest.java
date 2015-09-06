@@ -12,6 +12,8 @@ public class SystemUnderTest {
 
     private HowItBehaves howItBehaves;
 
+    public SystemUnderTest() {}
+
     public SystemUnderTest(HowItBehaves howItBehaves) {
         this.howItBehaves = howItBehaves;
     }
@@ -21,5 +23,9 @@ public class SystemUnderTest {
      */
     public void process() {
         howItBehaves.whereItCallsDependencies();
+    }
+
+    public void setHowItBehaves(HowItBehaves howItBehaves) {
+        this.howItBehaves = howItBehaves;
     }
 }
