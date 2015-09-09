@@ -1,0 +1,91 @@
+/**
+ * 
+ */
+package mocking.matcher;
+
+import static org.easymock.EasyMock.anyBoolean;
+import static org.easymock.EasyMock.anyByte;
+import static org.easymock.EasyMock.anyChar;
+import static org.easymock.EasyMock.anyDouble;
+import static org.easymock.EasyMock.anyFloat;
+import static org.easymock.EasyMock.anyInt;
+import static org.easymock.EasyMock.anyLong;
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.anyShort;
+import static org.easymock.EasyMock.anyString;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+
+import java.time.Duration;
+
+import mocking.model.HowItBehaves;
+import mocking.model.SystemUnderTest;
+import mocking.model.ToBeMocked;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * This test case shows how to use matchers with EasyMock.
+ * 
+ * @author Xavier Pigeon
+ */
+public class MatchersWithEasyMockTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MatchersWithEasyMockTest.class);
+
+    private SystemUnderTest systemUnderTest;
+
+    private ToBeMocked mock;
+
+    /**
+     * @throws java.lang.Exception
+     */
+    @Before
+    public void setUp() throws Exception {
+        mock = createMock(ToBeMocked.class);
+    }
+
+    @Test
+    public void should_call_expected_methods_receiving_any_value_of_any_type() {
+        // GIVEN
+        systemUnderTest = new SystemUnderTest(new HowItBehaves() {
+
+            @Override
+            public void whereItCallsDependencies() {
+                LOGGER.debug(mock.method(true));
+                LOGGER.debug(mock.method((byte) 123));
+                LOGGER.debug(mock.method('a'));
+                LOGGER.debug(mock.method((double) 123));
+                LOGGER.debug(mock.method((float) 123));
+                LOGGER.debug(mock.method((int) 123));
+                LOGGER.debug(mock.method((long) 123));
+                LOGGER.debug(mock.method(Duration.ofMillis(500)));
+                LOGGER.debug(mock.method((short) 123));
+                LOGGER.debug(mock.method("any string"));
+            }
+        });
+        // Mock expectations
+        expect(mock.method(anyBoolean())).andReturn("response");
+        expect(mock.method(anyByte())).andReturn("response");
+        expect(mock.method(anyChar())).andReturn("response");
+        expect(mock.method(anyDouble())).andReturn("response");
+        expect(mock.method(anyFloat())).andReturn("response");
+        expect(mock.method(anyInt())).andReturn("response");
+        expect(mock.method(anyLong())).andReturn("response");
+        expect(mock.method(anyObject(Duration.class))).andReturn("response");
+        expect(mock.method(anyShort())).andReturn("response");
+        expect(mock.method(anyString())).andReturn("response");
+        replay(mock);
+
+        // WHEN
+        systemUnderTest.process();
+
+        // THEN
+        verify(mock);
+    }
+}
