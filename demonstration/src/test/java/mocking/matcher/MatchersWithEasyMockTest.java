@@ -13,9 +13,14 @@ import static org.easymock.EasyMock.anyLong;
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.anyShort;
 import static org.easymock.EasyMock.anyString;
+import static org.easymock.EasyMock.contains;
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.endsWith;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.find;
+import static org.easymock.EasyMock.matches;
 import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.startsWith;
 import static org.easymock.EasyMock.verify;
 
 import java.time.Duration;
@@ -80,6 +85,35 @@ public class MatchersWithEasyMockTest {
         expect(mock.method(anyObject(Duration.class))).andReturn("response");
         expect(mock.method(anyShort())).andReturn("response");
         expect(mock.method(anyString())).andReturn("response");
+        replay(mock);
+
+        // WHEN
+        systemUnderTest.process();
+
+        // THEN
+        verify(mock);
+    }
+
+    @Test
+    public void should_call_expected_methods_receiving_some_kinds_of_string() {
+        // GIVEN
+        systemUnderTest = new SystemUnderTest(new HowItBehaves() {
+
+            @Override
+            public void whereItCallsDependencies() {
+                LOGGER.debug(mock.method("prefix the argument is expected to start with"));
+                LOGGER.debug(mock.method("the argument should contain the expected substring somewhere"));
+                LOGGER.debug(mock.method("the argument should end with the expected suffix"));
+                LOGGER.debug(mock.method("56791fzpkegj"));
+                LOGGER.debug(mock.method("fzpkegj56791"));
+            }
+        });
+        // Mock expectations
+        expect(mock.method(startsWith("prefix"))).andReturn("response");
+        expect(mock.method(contains("substring"))).andReturn("response");
+        expect(mock.method(endsWith("suffix"))).andReturn("response");
+        expect(mock.method(matches("[1-9a-z]*"))).andReturn("response");
+        expect(mock.method(find("[1-9A-Z]*"))).andReturn("response");
         replay(mock);
 
         // WHEN
