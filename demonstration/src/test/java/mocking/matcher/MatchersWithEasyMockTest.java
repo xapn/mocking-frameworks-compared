@@ -16,8 +16,13 @@ import static org.easymock.EasyMock.anyString;
 import static org.easymock.EasyMock.contains;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.endsWith;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.find;
+import static org.easymock.EasyMock.geq;
+import static org.easymock.EasyMock.gt;
+import static org.easymock.EasyMock.leq;
+import static org.easymock.EasyMock.lt;
 import static org.easymock.EasyMock.matches;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.startsWith;
@@ -114,6 +119,35 @@ public class MatchersWithEasyMockTest {
         expect(mock.method(endsWith("suffix"))).andReturn("response");
         expect(mock.method(matches("[1-9a-z]*"))).andReturn("response");
         expect(mock.method(find("[1-9A-Z]*"))).andReturn("response");
+        replay(mock);
+
+        // WHEN
+        systemUnderTest.process();
+
+        // THEN
+        verify(mock);
+    }
+
+    @Test
+    public void should_call_expected_methods_receiving_numbers() {
+        // GIVEN
+        systemUnderTest = new SystemUnderTest(new HowItBehaves() {
+
+            @Override
+            public void whereItCallsDependencies() {
+                LOGGER.debug(mock.method(50d));
+                LOGGER.debug(mock.method(150d));
+                LOGGER.debug(mock.method(100d));
+                LOGGER.debug(mock.method(100d));
+                LOGGER.debug(mock.method(105d));
+            }
+        });
+        // Mock expectations
+        expect(mock.method(lt(100d))).andReturn("response");
+        expect(mock.method(gt(100d))).andReturn("response");
+        expect(mock.method(leq(100d))).andReturn("response");
+        expect(mock.method(geq(100d))).andReturn("response");
+        expect(mock.method(eq(100d, 10d))).andReturn("response");
         replay(mock);
 
         // WHEN
