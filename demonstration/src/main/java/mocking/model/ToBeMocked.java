@@ -35,11 +35,15 @@ public interface ToBeMocked {
 
     String method(long argument);
 
-    <T> String method(T argument);
-
     String method(short argument);
 
     String method(String argument);
+
+    <T> void voidMethod(T argument);
+
+    <T> String method(T argument);
+
+    <T> String methodThrowingException(T argument) throws Exception;
 
     String methodThrowingException() throws Exception;
 
