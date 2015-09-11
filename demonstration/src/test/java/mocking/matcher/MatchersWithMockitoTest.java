@@ -4,7 +4,12 @@
 package mocking.matcher;
 
 import static org.mockito.AdditionalMatchers.and;
+import static org.mockito.AdditionalMatchers.eq;
 import static org.mockito.AdditionalMatchers.find;
+import static org.mockito.AdditionalMatchers.geq;
+import static org.mockito.AdditionalMatchers.gt;
+import static org.mockito.AdditionalMatchers.leq;
+import static org.mockito.AdditionalMatchers.lt;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyByte;
@@ -138,6 +143,57 @@ public class MatchersWithMockitoTest {
         verify(mock).method(and(and(startsWith("_prefix"), endsWith("suffix_")), contains("_sub-string_")));
         verify(mock).method(matches("^[0-9]*[a-z]*$"));
         verify(mock).method(find("^[A-Z]*[0-9]*$"));
+        verifyNoMoreInteractions(mock);
+    }
+
+    @Test
+    public void should_call_expected_methods_receiving_numbers_1() {
+        // GIVEN
+        systemUnderTest = new SystemUnderTest(new HowItBehaves() {
+
+            @Override
+            public void whereItCallsDependencies() {
+                LOGGER.debug(mock.method(50d));
+                LOGGER.debug(mock.method(1000d));
+                LOGGER.debug(mock.method(505d));
+            }
+        });
+        // Mock expectations
+        when(mock.method(lt(100d))).thenReturn("response");
+        when(mock.method(geq(1000d))).thenReturn("response");
+        when(mock.method(eq(500d, 10d))).thenReturn("response");
+
+        // WHEN
+        systemUnderTest.process();
+
+        // THEN
+        verify(mock).method(lt(100d));
+        verify(mock).method(geq(1000d));
+        verify(mock).method(eq(500d, 10d));
+        verifyNoMoreInteractions(mock);
+    }
+
+    @Test
+    public void should_call_expected_methods_receiving_numbers_2() {
+        // GIVEN
+        systemUnderTest = new SystemUnderTest(new HowItBehaves() {
+
+            @Override
+            public void whereItCallsDependencies() {
+                LOGGER.debug(mock.method(100d));
+                LOGGER.debug(mock.method(1001d));
+            }
+        });
+        // Mock expectations
+        when(mock.method(leq(100d))).thenReturn("response");
+        when(mock.method(gt(1000d))).thenReturn("response");
+
+        // WHEN
+        systemUnderTest.process();
+
+        // THEN
+        verify(mock).method(leq(100d));
+        verify(mock).method(gt(1000d));
         verifyNoMoreInteractions(mock);
     }
 }
