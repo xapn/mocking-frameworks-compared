@@ -3,6 +3,8 @@
  */
 package mocking.matcher;
 
+import static org.mockito.AdditionalMatchers.and;
+import static org.mockito.AdditionalMatchers.find;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyByte;
@@ -13,6 +15,10 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyShort;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.contains;
+import static org.mockito.Matchers.endsWith;
+import static org.mockito.Matchers.matches;
+import static org.mockito.Matchers.startsWith;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -95,6 +101,43 @@ public class MatchersWithMockitoTest {
         verify(mock).method(any(Duration.class));
         verify(mock).method(anyShort());
         verify(mock).method(anyString());
+        verifyNoMoreInteractions(mock);
+    }
+
+    @Test
+    public void should_call_expected_methods_receiving_some_kinds_of_string() {
+        // GIVEN
+        systemUnderTest = new SystemUnderTest(new HowItBehaves() {
+
+            @Override
+            public void whereItCallsDependencies() {
+                LOGGER.debug(mock.method("prefix the argument is expected to start with"));
+                LOGGER.debug(mock.method("the argument should contain the expected substring somewhere"));
+                LOGGER.debug(mock.method("the argument should end with the expected suffix"));
+                LOGGER.debug(mock.method("_prefix _sub-string_ suffix_"));
+                LOGGER.debug(mock.method("506791fzpkegj"));
+                LOGGER.debug(mock.method("FREGORG506791"));
+            }
+        });
+        // Mock expectations
+        when(mock.method(startsWith("prefix"))).thenReturn("response");
+        when(mock.method(contains("substring"))).thenReturn("response");
+        when(mock.method(endsWith("suffix"))).thenReturn("response");
+        when(mock.method(and(and(startsWith("_prefix"), endsWith("suffix_")), contains("_sub-string_"))))
+                .thenReturn("response");
+        when(mock.method(matches("^[0-9]*[a-z]*$"))).thenReturn("response");
+        when(mock.method(find("^[A-Z]*[0-9]*$"))).thenReturn("response");
+
+        // WHEN
+        systemUnderTest.process();
+
+        // THEN
+        verify(mock).method(startsWith("prefix"));
+        verify(mock).method(contains("substring"));
+        verify(mock).method(endsWith("suffix"));
+        verify(mock).method(and(and(startsWith("_prefix"), endsWith("suffix_")), contains("_sub-string_")));
+        verify(mock).method(matches("^[0-9]*[a-z]*$"));
+        verify(mock).method(find("^[A-Z]*[0-9]*$"));
         verifyNoMoreInteractions(mock);
     }
 }
