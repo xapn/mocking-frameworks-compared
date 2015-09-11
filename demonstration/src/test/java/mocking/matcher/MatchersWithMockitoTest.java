@@ -14,10 +14,14 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyByte;
 import static org.mockito.Matchers.anyChar;
+import static org.mockito.Matchers.anyCollectionOf;
 import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Matchers.anyFloat;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyMapOf;
+import static org.mockito.Matchers.anySetOf;
 import static org.mockito.Matchers.anyShort;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
@@ -30,6 +34,12 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.time.Duration;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import mocking.model.HowItBehaves;
 import mocking.model.SystemUnderTest;
@@ -39,6 +49,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Lists;
 
 /**
  * This test case shows how to use argument matchers with Mockito.
@@ -194,6 +206,43 @@ public class MatchersWithMockitoTest {
         // THEN
         verify(mock).method(leq(100d));
         verify(mock).method(gt(1000d));
+        verifyNoMoreInteractions(mock);
+    }
+
+    @Test
+    public void should_call_expected_methods_receiving_collections() {
+        // GIVEN
+        systemUnderTest = new SystemUnderTest(new HowItBehaves() {
+
+            @Override
+            public void whereItCallsDependencies() {
+                Collection<String> collection = Collections.emptySet();
+                LOGGER.debug(mock.method(collection));
+                LOGGER.debug(mock.method(Lists.newArrayList("element #1", "element #2")));
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("key #1", "value #1");
+                map.put("key #2", "value #2");
+                LOGGER.debug(mock.method(map));
+                Set<String> set = new HashSet<String>();
+                set.add("element #1");
+                set.add("element #2");
+                LOGGER.debug(mock.method(set));
+            }
+        });
+        // Mock expectations
+        when(mock.method(anyCollectionOf(String.class))).thenReturn("response");
+        when(mock.method(anyListOf(String.class))).thenReturn("response");
+        when(mock.method(anyMapOf(String.class, String.class))).thenReturn("response");
+        when(mock.method(anySetOf(String.class))).thenReturn("response");
+
+        // WHEN
+        systemUnderTest.process();
+
+        // THEN
+        verify(mock).method(anyCollectionOf(String.class));
+        verify(mock).method(anyListOf(String.class));
+        verify(mock).method(anyMapOf(String.class, String.class));
+        verify(mock).method(anySetOf(String.class));
         verifyNoMoreInteractions(mock);
     }
 }

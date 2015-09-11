@@ -3,6 +3,11 @@
  */
 package mocking.model;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * This interface stands for any dependency component the object under test
  * should depends on.
@@ -38,6 +43,14 @@ public interface ToBeMocked {
     String method(short argument);
 
     String method(String argument);
+
+    <T> String method(Collection<T> argument);
+
+    <T> String method(List<T> argument);
+
+    <K, V> String method(Map<K, V> argument);
+
+    <T> String method(Set<T> set);
 
     <T> void voidMethod(T argument);
 
