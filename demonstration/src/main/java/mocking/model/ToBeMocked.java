@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package mocking.model;
 
@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * This interface stands for any dependency component the object under test
  * should depends on.
- * 
+ *
  * @author Xavier Pigeon
  */
 public interface ToBeMocked {
@@ -55,6 +55,8 @@ public interface ToBeMocked {
     <T> void voidMethod(T argument);
 
     <T> String method(T argument);
+
+    String method(String argument, String... arguments);
 
     <T> String methodThrowingException(T argument) throws Exception;
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package mocking.matcher;
 
@@ -24,6 +24,7 @@ import static org.mockito.Matchers.anyMapOf;
 import static org.mockito.Matchers.anySetOf;
 import static org.mockito.Matchers.anyShort;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.anyVararg;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Matchers.endsWith;
 import static org.mockito.Matchers.matches;
@@ -41,10 +42,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import mocking.model.HowItBehaves;
-import mocking.model.SystemUnderTest;
-import mocking.model.ToBeMocked;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -52,9 +49,13 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
+import mocking.model.HowItBehaves;
+import mocking.model.SystemUnderTest;
+import mocking.model.ToBeMocked;
+
 /**
  * This test case shows how to use argument matchers with Mockito.
- * 
+ *
  * @author Xavier Pigeon
  */
 public class MatchersWithMockitoTest {
@@ -85,7 +86,7 @@ public class MatchersWithMockitoTest {
                 LOGGER.debug(mock.method('a'));
                 LOGGER.debug(mock.method((double) 123));
                 LOGGER.debug(mock.method((float) 123));
-                LOGGER.debug(mock.method((int) 123));
+                LOGGER.debug(mock.method(123));
                 LOGGER.debug(mock.method((long) 123));
                 LOGGER.debug(mock.method(Duration.ofMillis(500)));
                 LOGGER.debug(mock.method((short) 123));
@@ -243,6 +244,27 @@ public class MatchersWithMockitoTest {
         verify(mock).method(anyListOf(String.class));
         verify(mock).method(anyMapOf(String.class, String.class));
         verify(mock).method(anySetOf(String.class));
+        verifyNoMoreInteractions(mock);
+    }
+
+    @Test
+    public void should_call_expected_methods_receiving_variable_arguments() {
+        // GIVEN
+        systemUnderTest = new SystemUnderTest(new HowItBehaves() {
+
+            @Override
+            public void whereItCallsDependencies() {
+                LOGGER.debug(mock.method("expected call", "with", "a", "variable", "number", "of", "arguments"));
+            }
+        });
+        // Mock expectations
+        when(mock.method(anyString(), anyVararg())).thenReturn("response");
+
+        // WHEN
+        systemUnderTest.process();
+
+        // THEN
+        verify(mock).method(anyString(), anyVararg());
         verifyNoMoreInteractions(mock);
     }
 }
