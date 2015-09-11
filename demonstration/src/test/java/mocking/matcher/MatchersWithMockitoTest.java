@@ -1,0 +1,100 @@
+/**
+ * 
+ */
+package mocking.matcher;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyByte;
+import static org.mockito.Matchers.anyChar;
+import static org.mockito.Matchers.anyDouble;
+import static org.mockito.Matchers.anyFloat;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyShort;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
+
+import java.time.Duration;
+
+import mocking.model.HowItBehaves;
+import mocking.model.SystemUnderTest;
+import mocking.model.ToBeMocked;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * This test case shows how to use argument matchers with Mockito.
+ * 
+ * @author Xavier Pigeon
+ */
+public class MatchersWithMockitoTest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MatchersWithMockitoTest.class);
+
+    private SystemUnderTest systemUnderTest;
+
+    private ToBeMocked mock;
+
+    /**
+     * @throws java.lang.Exception
+     */
+    @Before
+    public void setUp() throws Exception {
+        mock = mock(ToBeMocked.class);
+    }
+
+    @Test
+    public void should_call_expected_methods_receiving_any_value_of_any_type() {
+        // GIVEN
+        systemUnderTest = new SystemUnderTest(new HowItBehaves() {
+
+            @Override
+            public void whereItCallsDependencies() {
+                LOGGER.debug(mock.method(true));
+                LOGGER.debug(mock.method((byte) 123));
+                LOGGER.debug(mock.method('a'));
+                LOGGER.debug(mock.method((double) 123));
+                LOGGER.debug(mock.method((float) 123));
+                LOGGER.debug(mock.method((int) 123));
+                LOGGER.debug(mock.method((long) 123));
+                LOGGER.debug(mock.method(Duration.ofMillis(500)));
+                LOGGER.debug(mock.method((short) 123));
+                LOGGER.debug(mock.method("any string"));
+            }
+        });
+        // Mock expectations
+        when(mock.method(anyBoolean())).thenReturn("response");
+        when(mock.method(anyByte())).thenReturn("response");
+        when(mock.method(anyChar())).thenReturn("response");
+        when(mock.method(anyDouble())).thenReturn("response");
+        when(mock.method(anyFloat())).thenReturn("response");
+        when(mock.method(anyInt())).thenReturn("response");
+        when(mock.method(anyLong())).thenReturn("response");
+        when(mock.method(any(Duration.class))).thenReturn("response");
+        when(mock.method(anyShort())).thenReturn("response");
+        when(mock.method(anyString())).thenReturn("response");
+
+        // WHEN
+        systemUnderTest.process();
+
+        // THEN
+        verify(mock).method(anyBoolean());
+        verify(mock).method(anyByte());
+        verify(mock).method(anyChar());
+        verify(mock).method(anyDouble());
+        verify(mock).method(anyFloat());
+        verify(mock).method(anyInt());
+        verify(mock).method(anyLong());
+        verify(mock).method(any(Duration.class));
+        verify(mock).method(anyShort());
+        verify(mock).method(anyString());
+        verifyNoMoreInteractions(mock);
+    }
+}
