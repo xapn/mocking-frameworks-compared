@@ -3,8 +3,8 @@
  */
 package mocking.voidmethod;
 
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import mocking.model.HowItBehaves;
@@ -34,7 +34,7 @@ public class VoidMethodWithEasyMockTest {
      */
     @Before
     public void setUp() throws Exception {
-        mock = createMock(ToBeMocked.class);
+        mock = mock(ToBeMocked.class);
     }
 
     @Test

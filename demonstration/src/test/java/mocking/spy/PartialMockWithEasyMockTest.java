@@ -3,8 +3,8 @@
  */
 package mocking.spy;
 
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import mocking.model.legacy.DefaultBehaviorWithLegacyCode;
@@ -32,7 +32,7 @@ public class PartialMockWithEasyMockTest {
     @Test
     public void should_call_spied_method() {
         // GIVEN
-        HowItBehaves mock = createMock(HowItBehaves.class);
+        HowItBehaves mock = mock(HowItBehaves.class);
         HowItBehaves howItBehaves = new DefaultBehaviorWithLegacyCode();
         systemUnderTest = new SystemUnderTest(mock);
         // Mock expectations

@@ -14,8 +14,8 @@ import static org.easymock.EasyMock.captureDouble;
 import static org.easymock.EasyMock.captureFloat;
 import static org.easymock.EasyMock.captureInt;
 import static org.easymock.EasyMock.captureLong;
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.newCapture;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -50,7 +50,7 @@ public class ArgumentCaptureWithEasyMockTest {
      */
     @Before
     public void setUp() throws Exception {
-        mock = createMock(ToBeMocked.class);
+        mock = mock(ToBeMocked.class);
     }
 
     @Test

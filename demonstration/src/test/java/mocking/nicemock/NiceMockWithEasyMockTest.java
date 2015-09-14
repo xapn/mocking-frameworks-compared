@@ -3,8 +3,8 @@
  */
 package mocking.nicemock;
 
-import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.niceMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import mocking.model.HowItBehaves;
@@ -34,7 +34,7 @@ public class NiceMockWithEasyMockTest {
      */
     @Before
     public void setUp() throws Exception {
-        mock = createNiceMock(ToBeMocked.class);
+        mock = niceMock(ToBeMocked.class);
     }
 
     @Test
