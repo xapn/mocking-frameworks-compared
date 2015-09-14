@@ -28,19 +28,35 @@ public interface ToBeMocked {
 
     String method(boolean argument);
 
+    String method(Boolean argument);
+
     String method(byte argument);
+
+    String method(Byte argument);
 
     String method(char argument);
 
+    String method(Character argument);
+
     String method(double argument);
+
+    String method(Double argument);
 
     String method(float argument);
 
+    String method(Float argument);
+
     String method(int argument);
+
+    String method(Integer argument);
 
     String method(long argument);
 
+    String method(Long argument);
+
     String method(short argument);
+
+    String method(Short argument);
 
     String method(String argument);
 
