@@ -84,4 +84,36 @@ public class MoreArgumentCapturesWithEasyMockTest {
         assertThat(captured.getValue().getRatio()).isEqualTo(new BigDecimal("30"));
         assertThat(captured.getValue().getQuantity()).isEqualTo(300);
     }
+
+    @Test
+    public void should_call_an_expected_method_capturing_the_argument_at_the_first_call() {
+        // GIVEN
+        systemUnderTest = new SystemUnderTest<Argument>(new HowItBehaves<Argument>() {
+
+            @Override
+            public void whereItCallsDependencies(ArgumentWrapper<Argument> argumentWrapper) {
+                Argument argument = argumentWrapper.getArgument();
+
+                // Some calculations
+                for (int count = 0; count < 3; count++) {
+                    argument.setRatio(argument.getRatio().add(TEN));
+                    argument.setQuantity(argument.getQuantity() + 100);
+                    LOGGER.debug(mock.method(new Argument(argument)));
+                }
+            }
+        });
+        // Mock expectations
+        Capture<Argument> captured = newCapture(CaptureType.FIRST);
+        expect(mock.method(capture(captured))).andReturn("response").atLeastOnce();
+        replay(mock);
+
+        // WHEN
+        systemUnderTest.process(new ArgumentWrapper<Argument>(LocalDate.now(),
+                new Argument("wrapped argument", ZERO, 0)));
+
+        // THEN
+        verify(mock);
+        assertThat(captured.getValue().getRatio()).isEqualTo(new BigDecimal("10"));
+        assertThat(captured.getValue().getQuantity()).isEqualTo(100);
+    }
 }
