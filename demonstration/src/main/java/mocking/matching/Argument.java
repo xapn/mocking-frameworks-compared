@@ -43,6 +43,16 @@ public class Argument {
     }
 
     /**
+     * Constructor.
+     * 
+     * @param argument
+     *            an object {@link Argument}
+     */
+    public Argument(Argument argument) {
+        this(argument.getDescription(), argument.getRatio(), argument.getQuantity());
+    }
+
+    /**
      * Getter for the field description.
      * 
      * @return the description
