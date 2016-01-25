@@ -7,8 +7,8 @@ import static java.math.BigDecimal.TEN;
 import static java.math.BigDecimal.ZERO;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.newCapture;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -47,7 +47,7 @@ public class MoreArgumentCapturesWithEasyMockTest {
      */
     @Before
     public void setUp() throws Exception {
-        mock = createMock(ToBeMocked.class);
+        mock = mock(ToBeMocked.class);
     }
 
     /**

@@ -3,19 +3,18 @@
  */
 package mocking.regularmock;
 
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import mocking.model.HowItBehaves;
+import mocking.model.SystemUnderTest;
+import mocking.model.ToBeMocked;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import mocking.model.HowItBehaves;
-import mocking.model.SystemUnderTest;
-import mocking.model.ToBeMocked;
 
 /**
  * This test case shows how to control the number of method calls with EasyMock.
@@ -35,7 +34,7 @@ public class NumberOfMethodCallsWithEasyMockTest {
      */
     @Before
     public void setUp() throws Exception {
-        mock = createMock(ToBeMocked.class);
+        mock = mock(ToBeMocked.class);
     }
 
     @Test

@@ -6,8 +6,8 @@ package mocking.matcher;
 import static java.math.BigDecimal.ONE;
 import static java.math.BigDecimal.TEN;
 import static mocking.matching.EasyMockArgumentMatcher.eqArgument;
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import mocking.matching.Argument;
@@ -38,7 +38,7 @@ public class CustomMatcherWithEasyMockTest {
      */
     @Before
     public void setUp() throws Exception {
-        mock = createMock(ToBeMocked.class);
+        mock = mock(ToBeMocked.class);
     }
 
     @Test

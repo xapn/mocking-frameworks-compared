@@ -14,7 +14,6 @@ import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.anyShort;
 import static org.easymock.EasyMock.anyString;
 import static org.easymock.EasyMock.contains;
-import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.endsWith;
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
@@ -24,6 +23,7 @@ import static org.easymock.EasyMock.gt;
 import static org.easymock.EasyMock.leq;
 import static org.easymock.EasyMock.lt;
 import static org.easymock.EasyMock.matches;
+import static org.easymock.EasyMock.mock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.startsWith;
 import static org.easymock.EasyMock.verify;
@@ -57,7 +57,7 @@ public class MatchersWithEasyMockTest {
      */
     @Before
     public void setUp() throws Exception {
-        mock = createMock(ToBeMocked.class);
+        mock = mock(ToBeMocked.class);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class MatchersWithEasyMockTest {
                 LOGGER.debug(mock.method('a'));
                 LOGGER.debug(mock.method((double) 123));
                 LOGGER.debug(mock.method((float) 123));
-                LOGGER.debug(mock.method((int) 123));
+                LOGGER.debug(mock.method(123));
                 LOGGER.debug(mock.method((long) 123));
                 LOGGER.debug(mock.method(Duration.ofMillis(500)));
                 LOGGER.debug(mock.method((short) 123));
