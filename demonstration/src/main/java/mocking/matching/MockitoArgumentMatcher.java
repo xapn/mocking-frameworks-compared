@@ -12,7 +12,7 @@ import org.mockito.ArgumentMatcher;
  * 
  * @author Xavier Pigeon
  */
-public class MockitoArgumentMatcher extends ArgumentMatcher<Argument> {
+public class MockitoArgumentMatcher implements ArgumentMatcher<Argument> {
 
     private Argument expected;
 
